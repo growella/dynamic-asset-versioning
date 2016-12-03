@@ -1,0 +1,28 @@
+{
+    "name": "growella/dynamic-asset-versioning",
+    "description": "Dynamically set asset version numbers based on file modification times, preventing stale caches.",
+    "type": "wordpress-plugin",
+    "require-dev": {
+        "10up/wp_mock": "^0.1.1",
+        "phpunit/phpunit": "^5.7",
+        "stevegrunwell/wp-enforcer": "^0.4.1"
+    },
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Growella",
+            "email": "hello@growella.com"
+        },
+        {
+            "name": "Steve Grunwell",
+            "email": "steve@stevegrunwell.com"
+        }
+    ],
+    "require": {},
+    "post-install-cmd": [
+        "wp-enforcer"
+    ],
+    "post-update-cmd": [
+        "wp-enforcer"
+    ]
+}
