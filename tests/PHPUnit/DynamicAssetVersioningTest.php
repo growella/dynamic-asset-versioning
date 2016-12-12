@@ -16,6 +16,45 @@ class DynamicAssetVersioningTest extends TestCase {
 		'dynamic-asset-versioning.php',
 	);
 
+	public function testMaybeVersionAssetReturnsEarlyIfDependencyIsNotRegistered() {
+		$src  = uniqid();
+		$deps = new \stdClass;
+
+		$this->assertEquals(
+			$src,
+			maybe_version_asset( $src, 'handle', $deps ),
+			'If there are no registered dependencies, maybe_version_asset() should return early.'
+		);
+	}
+
+	public function testMaybeVersionAssetReturnsEarlyIfDependencyHasVersion() {
+		$src    = uniqid();
+		$script = new \stdClass;
+		$script->ver = 1;
+		$deps   = new \stdClass;
+		$deps->registered = array( 'handle' => $script );
+
+		$this->assertEquals(
+			$src,
+			maybe_version_asset( $src, 'handle', $deps ),
+			'Assets with explicit versions defined should not be touched!'
+		);
+	}
+
+	public function testMaybeVersionAssetReturnsEarlyIfInDefaultPath() {
+		$src    = 'http://example.com/wp-admin/my-script.js';
+		$script = new \stdClass;
+		$deps   = new \stdClass;
+		$deps->registered   = array( 'handle' => $script );
+		$deps->default_dirs = array( '/wp-admin/' );
+
+		$this->assertEquals(
+			$src,
+			maybe_version_asset( $src, 'handle', $deps ),
+			'Un-versioned assets in default paths should not be touched'
+		);
+	}
+
 	public function testMaybeVersionScript() {
 		global $wp_scripts;
 

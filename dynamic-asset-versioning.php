@@ -24,7 +24,31 @@ namespace Growella\DynamicAssetVersioning;
  *                                $wp_styles globals.
  */
 function maybe_version_asset( $src, $handle, &$deps ) {
-	return $src;
+
+	// Return early if we don't have a matching handle.
+	if ( ! isset( $deps->registered[ $handle ] ) ) {
+		return $src;
+	}
+
+	// If the file already has a version, return early.
+	if ( ! empty( $deps->registered[ $handle ]->ver ) ) {
+		return $src;
+	}
+
+	// Don't mess with files in the default directories, as the WP version (default behavior) works.
+	$path = parse_url( $src, PHP_URL_PATH );
+
+	foreach ( $deps->default_dirs as $dir ) {
+		if ( 0 === strpos( $path, $dir ) ) {
+			return $src;
+		}
+	}
+
+	// If we've gotten this far, it's time to get a version.
+	$version = get_file_version( $src );
+	$queue->registered[ $handle ]->ver = $version;
+
+	return add_query_arg( 'ver', $version, $src );
 }
 
 /**
