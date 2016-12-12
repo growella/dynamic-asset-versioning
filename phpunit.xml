@@ -14,7 +14,7 @@
 	</groups>
 	<filter>
 		<whitelist>
-			<directory suffix=".php">inc</directory>
+			<file>dynamic-asset-versioning.php</file>
 		</whitelist>
 	</filter>
 	<php>
