@@ -16,6 +16,25 @@ class DynamicAssetVersioningTest extends TestCase {
 		'dynamic-asset-versioning.php',
 	);
 
+	public function testMaybeVersionAsset() {
+		$src    = uniqid();
+		$script = new \stdClass;
+		$deps   = new \stdClass;
+		$deps->registered = array( 'handle' => $script );
+		$deps->default_dirs = array( '/wp-admin/' );
+
+		M::wpFunction( __NAMESPACE__ . '\get_file_version', array(
+			'return' => 123,
+		) );
+
+		M::wpFunction( 'add_query_arg', array(
+			'args'   => array( 'ver', 123, $src ),
+			'return' => $src . '?ver=123',
+		) );
+
+		$this->assertEquals( $src . '?ver=123', maybe_version_asset( $src, 'handle', $deps ) );
+	}
+
 	public function testMaybeVersionAssetReturnsEarlyIfDependencyIsNotRegistered() {
 		$src  = uniqid();
 		$deps = new \stdClass;
