@@ -80,3 +80,30 @@ function maybe_version_style( $src, $handle ) {
 	return maybe_version_asset( $src, $handle, $wp_styles );
 }
 add_filter( 'style_loader_src', __NAMESPACE__ . '\maybe_version_style', 10, 2 );
+
+/**
+ * Get the file modification time for a given file.
+ *
+ * @param string $url  The URL for the file.
+ * @return string|null A version string for the file or NULL.
+ */
+function get_file_version( $url ) {
+	$content_url = content_url();
+	$filepath    = str_replace( $content_url, WP_CONTENT_DIR, $url );
+	$filepath    = explode( '?', $filepath );
+	$filepath    = array_shift( $filepath );
+
+	// Ensure the file actually exists.
+	if ( ! file_exists( $filepath ) ) {
+		return;
+	}
+
+	// Attempt to read the file timestamp.
+	try {
+		$timestamp = filemtime( $filepath );
+	} catch ( \Exception $e ) {
+		return;
+	}
+
+	return $timestamp ? (string) $timestamp : null;
+}

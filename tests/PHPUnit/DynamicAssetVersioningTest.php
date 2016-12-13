@@ -105,4 +105,64 @@ class DynamicAssetVersioningTest extends TestCase {
 
 		$wp_styles = null;
 	}
+
+	public function testGetFileVersion() {
+		M::wpFunction( 'content_url', array(
+			'return' => 'http://example.com/some/path',
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\file_exists', array(
+			'args'   => array( WP_CONTENT_DIR . '/style.css' ),
+			'return' => true,
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\filemtime', array(
+			'return' => 123,
+		) );
+
+		$version = get_file_version( 'http://example.com/some/path/style.css' );
+
+		$this->assertEquals( '123', $version );
+		$this->assertInternalType( 'string', $version );
+	}
+
+	public function testGetFileVersionStripsQueryStringFromFilePath() {
+		M::wpFunction( 'content_url', array(
+			'return' => 'http://example.com/some/path',
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\file_exists', array(
+			'times'  => 1,
+			'args'   => array( WP_CONTENT_DIR . '/style.css' ),
+			'return' => false,
+		) );
+
+		get_file_version( 'http://example.com/some/path/style.css?foo=bar' );
+	}
+
+	public function testGetFileVersionChecksThatFileExistsBeforeFilemtime() {
+		M::wpFunction( 'content_url', array(
+			'return' => 'http://example.com/some/path',
+		) );
+
+		$this->assertNull( get_file_version( 'http://example.com/some/path/style.css' ) );
+	}
+
+	public function testGetFileVersionHandlesFilemtimeExceptions() {
+		M::wpFunction( 'content_url', array(
+			'return' => 'http://example.com/some/path',
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\file_exists', array(
+			'return' => true,
+		) );
+
+		M::wpFunction( __NAMESPACE__ . '\filemtime', array(
+			'return' => function () {
+				throw new \InvalidArgumentException( 'ruh roh!' );
+			},
+		) );
+
+		$this->assertNull( get_file_version( 'http://example.com/some/path/style.css' ) );
+	}
 }
