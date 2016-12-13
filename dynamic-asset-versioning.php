@@ -46,7 +46,7 @@ function maybe_version_asset( $src, $handle, &$deps ) {
 
 	// If we've gotten this far, it's time to get a version.
 	$version = get_file_version( $src );
-	$queue->registered[ $handle ]->ver = $version;
+	$deps->registered[ $handle ]->ver = $version;
 
 	return add_query_arg( 'ver', $version, $src );
 }
