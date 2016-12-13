@@ -1,0 +1,28 @@
+{
+  "name": "dynamic-asset-versioning",
+  "description": "Dynamically set asset version numbers based on file modification times, preventing stale caches.",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/growella/dynamic-asset-versioning.git"
+  },
+  "keywords": [
+    "WordPress",
+    "caching",
+    "asset",
+    "version",
+    "enqueue",
+    "stylesheet",
+    "script"
+  ],
+  "author": "Growella",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/growella/dynamic-asset-versioning/issues"
+  },
+  "homepage": "https://github.com/growella/dynamic-asset-versioning#readme",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-contrib-copy": "^1.0.0",
+    "grunt-wp-i18n": "^0.5.4"
+  }
+}
