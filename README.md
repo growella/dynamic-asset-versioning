@@ -1,6 +1,6 @@
 # Dynamic Asset Versioning
 
-[![Build Status](https://travis-ci.org/growella/dynamic-asset-versioning.svg?branch=master)](https://travis-ci.org/growella/dynamic-asset-versioning)
+[![Build Status](https://travis-ci.org/growella/dynamic-asset-versioning.svg?branch=develop)](https://travis-ci.org/growella/dynamic-asset-versioning)
 [![Code Climate](https://codeclimate.com/github/growella/dynamic-asset-versioning/badges/gpa.svg)](https://codeclimate.com/github/growella/dynamic-asset-versioning)
 
 WordPress asset versioning can be a double-edged sword: on one-hand, it's extremely effective for cache-busting, ensuring you aren't sharing stale scripts or styles to your visitors. On the other hand, having to manually increment a version number is a pain (even [as a constant](https://10up.github.io/Engineering-Best-Practices/php/#asset-versioning)), often resulting in a version control history full of "bumping the version number" commits.

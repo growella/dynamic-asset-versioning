@@ -20,10 +20,9 @@
         }
     ],
     "require": {},
-    "post-install-cmd": [
-        "wp-enforcer"
-    ],
-    "post-update-cmd": [
-        "wp-enforcer"
-    ]
+    "scripts": {
+        "post-install-cmd": [
+            "wp-enforcer"
+        ]
+    }
 }
