@@ -25,6 +25,11 @@ namespace Growella\DynamicAssetVersioning;
  */
 function maybe_version_asset( $src, $handle, &$deps ) {
 
+	// Short-circuit the process if SCRIPT_DEBUG is true.
+	if ( defined( 'SCRIPT_DEBUG' ) && SCRIPT_DEBUG ) {
+		return $src;
+	}
+
 	// Return early if we don't have a matching handle.
 	if ( ! isset( $deps->registered[ $handle ] ) ) {
 		return $src;
