@@ -35,6 +35,24 @@ class DynamicAssetVersioningTest extends TestCase {
 		$this->assertEquals( $src . '?ver=123', maybe_version_asset( $src, 'handle', $deps ) );
 	}
 
+	/**
+	 * @runTestInSeparateProcess
+	 */
+	public function testMaybeVersionAssetReturnsEarlyIfScriptDebugIsTrue() {
+		$src    = uniqid();
+		$script = new \stdClass;
+		$deps   = new \stdClass;
+		$deps->registered = array( 'handle' => $script );
+
+		define( 'SCRIPT_DEBUG', true );
+
+		$this->assertEquals(
+			$src,
+			maybe_version_asset( $src, 'handle', $deps ),
+			'Never dynamically version an asset if SCRIPT_DEBUG is true'
+		);
+	}
+
 	public function testMaybeVersionAssetReturnsEarlyIfDependencyIsNotRegistered() {
 		$src  = uniqid();
 		$deps = new \stdClass;
